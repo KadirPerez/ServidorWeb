@@ -1,0 +1,99 @@
+{
+  "activos": [
+    {
+      "id": 1,
+      "numero_serie": "AB123456",
+      "numero_inventario": "UABC001",
+      "tipo": "Computadora",
+      "descripcion": "Laptop Dell XPS 15",
+      "ubicacion": "Oficina 201",
+      "responsable": "Kadir Perez",
+      "imagen": "imagen1_1.jpg"
+    },
+    {
+      "id": 3,
+      "numero_serie": "EF345678",
+      "numero_inventario": "UABC003",
+      "tipo": "Proyector",
+      "descripcion": "Proyector Epson EB-X41",
+      "ubicacion": "Aula Magna",
+      "responsable": "Carlos Pérez",
+      "imagen": "imagen3.jpg"
+    },
+    {
+      "id": 4,
+      "numero_serie": "TW143421",
+      "numero_inventario": "UABC004",
+      "tipo": "Laptop",
+      "descripcion": "Apple mac",
+      "ubicacion": "Oficina 105",
+      "responsable": "John Doe",
+      "imagen": "imagen5.jpg"
+    }
+  ],
+  "responsables": [
+    {
+      "id": 1,
+      "numero_empleado": "EMP001",
+      "nombre": "John Doe",
+      "activos_en_custodia": [
+        "AB123456"
+      ],
+      "imagen": "john_doe.jpg"
+    },
+    {
+      "id": 3,
+      "numero_empleado": "EMP003",
+      "nombre": "Carlos Pérez",
+      "activos_en_custodia": [
+        "EF345678"
+      ],
+      "imagen": "carlos_perez.jpg"
+    },
+    {
+      "id": 4,
+      "numero_empleado": "EMP001",
+      "nombre": "John Doe",
+      "activos_en_custodia": [
+        "AB123456"
+      ],
+      "imagen": "john_doe.jpg"
+    },
+    {
+      "id": 5,
+      "numero_empleado": "EMP005",
+      "nombre": "Kadir Perez",
+      "activos_en_custodia": [
+        "AB123456"
+      ],
+      "imagen": "kadir_perez.jpg"
+    }
+  ],
+  "ubicaciones": [
+    {
+      "id": 1,
+      "descripcion": "Oficina 101101",
+      "activos_asociados": [
+        "AB123456"
+      ],
+      "imagen": "oficina101.jpg"
+    },
+    {
+      "id": 3,
+      "descripcion": "Aula Magna",
+      "activos_asociados": [
+        "EF345678"
+      ],
+      "imagen": "aula_magna.jpg"
+    },
+    {
+      "id": 4,
+      "descripcion": "Oficina 201",
+      "activos_asociados": [
+        "AB123456"
+      ],
+      "imagen": "oficina201.jpg"
+    }
+  ]
+}
+
