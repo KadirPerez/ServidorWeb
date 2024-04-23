@@ -6,7 +6,7 @@ const fs = require("fs"); // Librería para manejar archivos del sistema
 const https = require("https"); // Módulo para crear servidores HTTPS
 
 // Se define el puerto en el que escuchará el servidor
-process.env.port = 4000;
+process.env.port = 4001;
 
 // Se leen los archivos de la clave privada y el certificado para HTTPS
 const llavePrivada = fs.readFileSync("./clave.key");
@@ -26,6 +26,8 @@ const httpsServer = https.createServer(credenciales, app);
 const activosRouter = require('./rutas/activosRouter');
 const ubicacionesRouter = require('./rutas/ubicacionesRouter');
 const responsablesRouter = require('./rutas/responsablesRouter');
+const tagsRouter = require('./rutas/tagsRouter');
+const usuariosRouter = require('./rutas/usuariosRouter');
 
 // Se agregan middlewares a la aplicación Express
 app.use(cors()); // Middleware para permitir CORS
@@ -40,6 +42,8 @@ app.get('/', (req, res) => {
 app.use('/activos', activosRouter);
 app.use('/ubicaciones', ubicacionesRouter);
 app.use('/responsables', responsablesRouter);
+app.use('/tags', tagsRouter);
+app.use('/usuarios', usuariosRouter);
 
 // El servidor HTTPS comienza a escuchar en el puerto definido
 httpsServer.listen(process.env.port, () => {

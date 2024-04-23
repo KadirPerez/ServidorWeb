@@ -13,13 +13,10 @@ router.get('/', ubicacionController.getAllUbicaciones);
 // Define la ruta GET que acepta un parámetro de ID para obtener una ubicación específica, manejada por la función getUbicacionesById del controlador
 router.get('/:id', ubicacionController.getUbicacionesById);
 
-// Define la ruta POST para crear una nueva ubicación, manejada por la función createNewUbicacion del controlador
-router.post('/', ubicacionController.createNewUbicacion);
+router.post('/', ubicacionController.postUbicacion);
 
-// Define la ruta DELETE para eliminar una ubicación según su ID, manejada por la función deleteUbicacion del controlador
 router.delete('/:id', ubicacionController.deleteUbicacion);
 
-// Define la ruta PUT para actualizar una ubicación según su ID, manejada por la función putUbicacion del controlador
 router.put('/:id', ubicacionController.putUbicacion);
 
 // Exporta el enrutador para que pueda ser utilizado por la aplicación principal

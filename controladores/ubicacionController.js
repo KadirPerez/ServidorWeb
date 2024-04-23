@@ -1,50 +1,72 @@
 // Importar el modelo de ubicación
-const ubicacion = require("../modelos/ubicacionModel.js")
+const models = require("../models")
 
 // Función asincrónica para obtener todas las ubicaciones
 async function getAllUbicaciones(req, res){
-    const allUbicaciones = await ubicacion.readData()
+    const allUbicaciones = await models.Ubicacion.findAll()
     return res.json(allUbicaciones)
 }
 
 // Función asincrónica para obtener ubicaciones por su ID
 async function getUbicacionesById(req, res){
-    const ubicacionesById = await ubicacion.readDataById(req.params.id)
-    return res.json(ubicacionesById)
+    const ubicacionById = await models.Ubicacion.findOne({
+        where: {id: req.params.id}
+    })
+    return res.json(ubicacionById)
 }
 
-// Función asincrónica para crear una nueva ubicación
-async function createNewUbicacion(req, res){
-    const ubicacionesExistente = await ubicacion.readData()   
-    const body = req.body
-    const newUbicacion = {
-        id: ubicacionesExistente.length + 1,
-        ... body,
+async function postUbicacion(req, res){  
+    try {
+        const nuevaUbicacion = await models.Ubicacion.create({
+            descripcion: req.body.descripcion,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        });
+
+        res.status(201).json({ message: 'Ubicacion creada correctamente', nuevaUbicacion });
+    } catch (error) {
+        console.error('Error al crear la ubicacion:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
-
-    ubicacionesExistente.push(newUbicacion)
-    ubicacion.writeData(ubicacionesExistente)
-
-    return res.status(201).json(newUbicacion);
 }
 
-// Función asincrónica para eliminar una ubicación
-async function deleteUbicacion(req, res){
-    const ubicacionesRestantes = await ubicacion.deleteData(req.params.id)
-    return res.json(ubicacionesRestantes)
-}
+async function deleteUbicacion(req, res){  
+    try {
+        let ubicacionAEliminar = await models.Ubicacion.findOne({
+            where: {id: req.params.id}
+        });
 
-// Función asincrónica para actualizar una ubicación
-async function putUbicacion(req, res){
-    const body = req.body
-    const newUbicacion = {
-        id: parseInt(req.params.id.slice(1)),
-        ... body,
+        if (!ubicacionAEliminar) {
+        throw new Error('La ubicacion no existe');
+        }
+
+        await ubicacionAEliminar.destroy();
+
+        res.status(201).json({ message: 'Ubicacion eliminada correctamente', ubicacionAEliminar });
+    } catch (error) {
+        console.error('Error al eliminar la ubicacion:', error.message);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
+}
 
-    const ubicacionesModificados = await ubicacion.putData(req.params.id, newUbicacion)
-    return res.json(ubicacionesModificados)
+async function putUbicacion(req, res){  
+    try {
+        const ubicacionAEditar = await models.Ubicacion.findOne({
+            where: {id: req.params.id}
+        });
+
+        if (!ubicacionAEditar) {
+            throw new Error('La ubicacion no existe');
+        }
+
+        await ubicacionAEditar.update(req.body, { fields: Object.keys(req.body) });
+
+        res.status(201).json({ message: 'Ubicacion editada correctamente', ubicacionAEditar });
+    } catch (error) {
+        console.error('Error al editar la ubicacion:', error.message);
+        res.status(500).json({ message: 'Error interno del servidor'});
+    }
 }
 
 // Exportar las funciones
-module.exports = {getAllUbicaciones, getUbicacionesById, createNewUbicacion, deleteUbicacion, putUbicacion}
+module.exports = {getAllUbicaciones, getUbicacionesById, postUbicacion, deleteUbicacion, putUbicacion}

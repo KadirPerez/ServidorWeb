@@ -7,22 +7,20 @@ const router = express.Router();
 // Importa el controlador activoController desde el archivo correspondiente en el directorio de controladores
 const activoController = require('../controladores/activoController');
 
-// Define la ruta GET para obtener todos los activos, manejada por la función getAllActivos del controlador
+// Define la ruta GET para obtener todos los activos
 router.get('/', activoController.getAllActivos);
 
-// Define la ruta GET que acepta un parámetro de ID para obtener un activo específico, manejada por la función getActivosById del controlador
+// Define la ruta GET para obtener por id
 router.get('/:id', activoController.getActivosById);
 
-// Define la ruta GET que acepta un parámetro de número de serie para obtener activos por número de serie, manejada por la función getActivosBySerie del controlador
+// Define la ruta GET para obtener por número de serie 
 router.get('/numSerie/:serie', activoController.getActivosBySerie);
 
-// Define la ruta POST para crear un nuevo activo, manejada por la función createNewActivo del controlador
-router.post('/', activoController.createNewActivo);
+// Define la ruta post 
+router.post('/', activoController.postActivo);
 
-// Define la ruta DELETE para eliminar un activo según su ID, manejada por la función deleteActivo del controlador
 router.delete('/:id', activoController.deleteActivo);
 
-// Define la ruta PUT para actualizar un activo según su ID, manejada por la función putActivo del controlador
 router.put('/:id', activoController.putActivo);
 
 // Exporta el enrutador para que pueda ser utilizado por la aplicación principal
