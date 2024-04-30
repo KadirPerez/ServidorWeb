@@ -16,6 +16,7 @@ async function demoAsociacionMuchosAMuchos() {
     activo.descripcion 
   );
   
+  console.log("Tagssss", tags)
   await activo.addTags(tags);
 
   let tagsAsociados = await activo.getTags();

@@ -15,6 +15,13 @@ async function getTagById(req, res){
     return res.json(tagById)
 }
 
+async function getTagByTag(req, res){
+    const tagByTag = await models.Tag.findOne({
+        where: {tag: req.params.tag}
+    })
+    return res.json(tagByTag)
+}
+
 async function postTag(req, res){  
     try {
         const nuevoTag = await models.Tag.create({
@@ -39,6 +46,10 @@ async function deleteTag(req, res){
         if (!tagAEliminar) {
         throw new Error('El tag no existe');
         }
+
+        await models.ActivoTag.destroy({
+            where: { tagId: tagAEliminar.id }
+        });
 
         await tagAEliminar.destroy();
 
@@ -68,5 +79,49 @@ async function putTag(req, res){
     }
 }
 
+async function addActivo(req, res){
+    try {
+        const tag = await models.Tag.findOne({
+            where: {id: req.params.idTag}
+        })
+        
+        if (!tag) {
+            throw new Error('El tag no existe');
+        }
+
+        const activo = await models.Activo.findOne({
+            where: {id: req.params.idActivo}
+        }) 
+        
+        if(!tag) {
+            throw new Error('El activo no existe');
+        }
+
+        activo.addTag(tag);
+
+        res.status(201).json({ message: 'Activo agregado correctamente'});
+    } catch (error) {
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+}
+
+async function getMisActivos(req, res) {
+    const tag = await models.Tag.findOne({
+        where: {id: req.params.id}
+    })
+
+    const activosAsociados = await tag.getActivos()
+    
+    return res.json(activosAsociados)
+}
+
+async function deleteActivo(req, res) {
+    const tag = await models.Tag.findOne({
+        where: {id: req.params.idTag}
+    })
+
+    tag.removeActivo(req.params.idActivo)
+}
+
 // Exportar las funciones
-module.exports = {getAllTags, getTagById, postTag, deleteTag, putTag}
+module.exports = {getAllTags, getTagById, postTag, deleteTag, putTag, addActivo, getMisActivos, getTagByTag, deleteActivo}

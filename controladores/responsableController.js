@@ -15,11 +15,27 @@ async function getResponsablesById(req, res){
     return res.json(responsableById)
 }
 
+async function getResponsablesByNombre(req, res){
+    const responsableByNombre = await models.Responsable.findOne({
+        where: {nombre: req.params.nombre}
+    })
+    return res.json(responsableByNombre)
+}
+
+async function getResponsablesByNumEmpleado(req, res){
+    const responsableByNumEmpleado = await models.Responsable.findOne({
+        where: {numEmpleado: req.params.numEmpleado}
+    })
+    return res.json(responsableByNumEmpleado)
+}
+
 async function postResponsable(req, res){  
     try {
         const nuevoResonsable = await models.Responsable.create({
             numEmpleado: req.body.numEmpleado,
             nombre: req.body.nombre,
+            imagen: req.body.imagen,
+            nombreImagen: req.body.nombreImagen,
             createdAt: new Date(),
             updatedAt: new Date()
         });
@@ -40,6 +56,8 @@ async function deleteResponsable(req, res){
         if (!responsableAEliminar) {
         throw new Error('El responsable no existe');
         }
+
+        await responsableAEliminar.setActivos(null);
 
         await responsableAEliminar.destroy();
 
@@ -69,5 +87,16 @@ async function putResponsable(req, res){
     }
 }
 
+async function getActivos(req, res){
+    const responsable = await models.Responsable.findOne({
+        where: {id: req.params.id}
+    });
+
+    const activosAsociados = await responsable.getActivos()
+    
+    return res.json(activosAsociados)
+}
+
 // Exportar las funciones
-module.exports = {getAllResponsables, getResponsablesById, postResponsable, deleteResponsable, putResponsable}
+module.exports = {getAllResponsables, getResponsablesById, postResponsable, deleteResponsable, 
+    putResponsable, getActivos, getResponsablesByNumEmpleado, getResponsablesByNombre}

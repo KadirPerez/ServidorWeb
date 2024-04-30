@@ -41,8 +41,12 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpload: 'CASCADE'
       },
+      nombreImagen: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       imagen: {
-        type: Sequelize.BLOB,
+        type: Sequelize.BLOB('long'),
         allowNull: true,
       },
       createdAt: {

@@ -15,10 +15,19 @@ async function getUbicacionesById(req, res){
     return res.json(ubicacionById)
 }
 
+async function getUbicacionesByDescripcion(req, res){
+    const ubicacionByDescripcion = await models.Ubicacion.findOne({
+        where: {descripcion: req.params.descripcion}
+    })
+    return res.json(ubicacionByDescripcion)
+}
+
 async function postUbicacion(req, res){  
     try {
         const nuevaUbicacion = await models.Ubicacion.create({
             descripcion: req.body.descripcion,
+            imagen: req.body.imagen,
+            nombreImagen: req.body.nombreImagen,
             createdAt: new Date(),
             updatedAt: new Date()
         });
@@ -39,6 +48,8 @@ async function deleteUbicacion(req, res){
         if (!ubicacionAEliminar) {
         throw new Error('La ubicacion no existe');
         }
+
+        await ubicacionAEliminar.setActivos(null);
 
         await ubicacionAEliminar.destroy();
 
@@ -68,5 +79,25 @@ async function putUbicacion(req, res){
     }
 }
 
+async function getActivos(req, res){
+    const ubicacion = await models.Ubicacion.findOne({
+        where: {id: req.params.id}
+    });
+
+    const activosAsociados = await ubicacion.getActivos()
+    
+    return res.json(activosAsociados)
+}
+
+async function getActivos(req, res){
+    const ubicacion = await models.Ubicacion.findOne({
+        where: {id: req.params.id}
+    });
+
+    const activosAsociados = await ubicacion.getActivos()
+    
+    return res.json(activosAsociados)
+}
+
 // Exportar las funciones
-module.exports = {getAllUbicaciones, getUbicacionesById, postUbicacion, deleteUbicacion, putUbicacion}
+module.exports = {getAllUbicaciones, getUbicacionesById, postUbicacion, deleteUbicacion, putUbicacion, getActivos, getUbicacionesByDescripcion}

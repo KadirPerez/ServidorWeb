@@ -14,7 +14,11 @@ module.exports = {
         allowNull: false,
       },
       imagen: {
-        type: Sequelize.BLOB,
+        type: Sequelize.BLOB('long'),
+        allowNull: true,
+      },
+      nombreImagen: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
       createdAt: {
