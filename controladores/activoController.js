@@ -44,9 +44,34 @@ async function postActivo(req, res){
             updatedAt: new Date()
         });
 
+        let responsable = null
+        if(req.body.idResponsable != null){
+            responsable = await models.Responsable.findOne({
+                where: {id: req.body.idResponsable}
+            })
+            await responsable.addActivo(nuevoActivo);
+        }
+
+        let ubicacion = null
+        if(req.body.idUbicacion != null){
+            ubicacion = await models.Ubicacion.findOne({
+                where: {id: req.body.idUbicacion}
+            }) 
+            await ubicacion.addActivo(nuevoActivo);
+        }
+
+        if(req.body.tags != null){
+            for(tagLeido of req.body.tags){
+                tagPorAgregar = await models.Tag.findOne({
+                    where: {tag: tagLeido}
+                })
+                await nuevoActivo.addTag(tagPorAgregar);
+            }
+        }
+
         res.status(201).json({ message: 'Activo creado correctamente'});
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor' });
+        res.status(500).json({ message: `Error interno del servidor. ${error}` , error: error});
     }
 }
 
@@ -191,6 +216,7 @@ async function deleteResponsable(req, res) {
         where: {id: req.params.id}
     })
     await activo.setResponsable(null);
+    activo.idResponsable = null
 }
 
 async function deleteUbicacion(req, res) {
@@ -198,6 +224,7 @@ async function deleteUbicacion(req, res) {
         where: {id: req.params.id}
     })
     await activo.setUbicacion(null);
+    activo.idUbicacion = null
 }
 
 // Exportar las funciones
