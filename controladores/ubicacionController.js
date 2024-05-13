@@ -16,9 +16,14 @@ async function getUbicacionesById(req, res){
 }
 
 async function getUbicacionesByDescripcion(req, res){
+    await console.log(req.params.descripcion)
+    
     const ubicacionByDescripcion = await models.Ubicacion.findOne({
         where: {descripcion: req.params.descripcion}
     })
+
+    await console.log(ubicacionByDescripcion)
+
     return res.json(ubicacionByDescripcion)
 }
 
@@ -31,6 +36,15 @@ async function postUbicacion(req, res){
             createdAt: new Date(),
             updatedAt: new Date()
         });
+
+        if(req.body.activos != null){
+            for(activoLeido of req.body.activos){
+                activoPorAgregar = await models.Activo.findOne({
+                    where: {descripcion: activoLeido}
+                })
+                await nuevaUbicacion.addActivo(activoPorAgregar);
+            }
+        } 
 
         res.status(201).json({ message: 'Ubicacion creada correctamente', nuevaUbicacion });
     } catch (error) {
@@ -69,6 +83,15 @@ async function putUbicacion(req, res){
         if (!ubicacionAEditar) {
             throw new Error('La ubicacion no existe');
         }
+
+        if(req.body.activos != null){
+            for(activoLeido of req.body.activos){
+                activoPorAgregar = await models.Activo.findOne({
+                    where: {descripcion: activoLeido}
+                })
+                await ubicacionAEditar.addActivo(activoPorAgregar);
+            }
+        } 
 
         await ubicacionAEditar.update(req.body, { fields: Object.keys(req.body) });
 

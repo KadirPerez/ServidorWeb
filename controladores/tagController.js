@@ -30,6 +30,15 @@ async function postTag(req, res){
             updatedAt: new Date()
         });
 
+        if(req.body.activos != null){
+            for(activoLeido of req.body.activos){
+                activoPorAgregar = await models.Activo.findOne({
+                    where: {descripcion: activoLeido}
+                })
+                await nuevoTag.addActivo(activoPorAgregar);
+            }
+        } 
+
         res.status(201).json({ message: 'Tag creado correctamente', nuevoTag });
     } catch (error) {
         console.error('Error al crear el tag:', error);
@@ -69,6 +78,15 @@ async function putTag(req, res){
         if (!tagAEditar) {
             throw new Error('El tag no existe');
         }
+
+        if(req.body.activos != null){
+            for(activoLeido of req.body.activos){
+                activoPorAgregar = await models.Activo.findOne({
+                    where: {descripcion: activoLeido}
+                })
+                await tagAEditar.addActivo(activoPorAgregar);
+            }
+        } 
 
         await tagAEditar.update(req.body, { fields: Object.keys(req.body) });
 

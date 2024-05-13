@@ -1,4 +1,3 @@
-// Se importan las librerías necesarias
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -26,6 +25,7 @@ const ubicacionesRouter = require('./rutas/ubicacionesRouter');
 const responsablesRouter = require('./rutas/responsablesRouter');
 const tagsRouter = require('./rutas/tagsRouter');
 const usuariosRouter = require('./rutas/usuariosRouter');
+const passportRouter = require('./rutas/passportRouter');
 
 app.use(cors()); 
 app.use(express.json()); 
@@ -39,6 +39,7 @@ app.use('/ubicacion', ubicacionesRouter);
 app.use('/responsable', responsablesRouter);
 app.use('/tag', tagsRouter);
 app.use('/usuario', usuariosRouter);
+app.use('/passport', passportRouter);
 
 httpsServer.listen(process.env.port, () => {
     console.log('Servidor https escuchando por el puerto:', process.env.port);

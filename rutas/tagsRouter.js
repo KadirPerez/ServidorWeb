@@ -1,29 +1,26 @@
-// Importa el módulo Express para crear la aplicación
 const express = require('express');
-
-// Crea un enrutador utilizando el método Router() de Express
+const miPassport = require('../controladores/passportController')
 const router = express.Router();
 
-// Importa el controlador tagController desde el archivo correspondiente en el directorio de controladores
 const tagController = require('../controladores/tagController');
 
-router.get('/', tagController.getAllTags);
+router.get('/', miPassport.passport.authenticate('jwt', { session: false }), tagController.getAllTags);
 
-router.get('/:id', tagController.getTagById);
+router.get('/:id', miPassport.passport.authenticate('jwt', { session: false }), tagController.getTagById);
 
-router.get('/tag/:tag', tagController.getTagByTag);
+router.get('/tag/:tag', miPassport.passport.authenticate('jwt', { session: false }), tagController.getTagByTag);
 
-router.get('/:id/activos', tagController.getMisActivos);
+router.get('/:id/activos', miPassport.passport.authenticate('jwt', { session: false }), tagController.getMisActivos);
 
-router.post('/', tagController.postTag);
+router.post('/', miPassport.passport.authenticate('jwt', { session: false }), tagController.postTag);
 
-router.delete('/:id', tagController.deleteTag);
+router.delete('/:id', miPassport.passport.authenticate('jwt', { session: false }), tagController.deleteTag);
 
-router.put('/:id', tagController.putTag);
+router.put('/:id', miPassport.passport.authenticate('jwt', { session: false }), tagController.putTag);
 
-router.put('/:idTag/activo/:idActivo', tagController.addActivo)
+router.put('/:idTag/activo/:idActivo', miPassport.passport.authenticate('jwt', { session: false }), tagController.addActivo)
 
-router.put('/:idTag/borrarActivo/:idActivo', tagController.deleteActivo)
+router.put('/:idTag/borrarActivo/:idActivo', miPassport.passport.authenticate('jwt', { session: false }), tagController.deleteActivo)
 
 module.exports = router;
 

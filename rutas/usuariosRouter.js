@@ -1,17 +1,17 @@
 const express = require('express');
-
+const miPassport = require('../controladores/passportController')
 const router = express.Router();
 
 const usuarioController = require('../controladores/usuarioController');
 
-router.get('/', usuarioController.getAllUsuarios);
+router.get('/', miPassport.passport.authenticate('jwt', { session: false }), usuarioController.getAllUsuarios);
 
-router.get('/:id', usuarioController.getUsuarioById);
+router.get('/:id', miPassport.passport.authenticate('jwt', { session: false }), usuarioController.getUsuarioById);
 
-router.post('/', usuarioController.postUsuario);
+router.post('/', miPassport.passport.authenticate('jwt', { session: false }), usuarioController.postUsuario);
 
-router.delete('/:id', usuarioController.deleteUsuario);
+router.delete('/:id', miPassport.passport.authenticate('jwt', { session: false }), usuarioController.deleteUsuario);
 
-router.put('/:id', usuarioController.putUsuario);
+router.put('/:id', miPassport.passport.authenticate('jwt', { session: false }), usuarioController.putUsuario);
 
 module.exports = router;

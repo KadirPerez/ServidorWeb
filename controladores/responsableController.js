@@ -39,6 +39,15 @@ async function postResponsable(req, res){
             createdAt: new Date(),
             updatedAt: new Date()
         });
+        
+        if(req.body.activos != null){
+            for(activoLeido of req.body.activos){
+                activoPorAgregar = await models.Activo.findOne({
+                    where: {descripcion: activoLeido}
+                })
+                await nuevoResonsable.addActivo(activoPorAgregar);
+            }
+        } 
 
         res.status(201).json({ message: 'Responsable creado correctamente', nuevoResonsable });
     } catch (error) {
@@ -77,6 +86,15 @@ async function putResponsable(req, res){
         if (!responsableAEditar) {
             throw new Error('El activo no existe');
         }
+
+        if(req.body.activos != null){
+            for(activoLeido of req.body.activos){
+                activoPorAgregar = await models.Activo.findOne({
+                    where: {descripcion: activoLeido}
+                })
+                await responsableAEditar.addActivo(activoPorAgregar);
+            }
+        } 
 
         await responsableAEditar.update(req.body, { fields: Object.keys(req.body) });
 
